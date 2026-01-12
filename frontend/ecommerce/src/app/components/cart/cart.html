@@ -1,0 +1,41 @@
+<div *ngIf="(cart$ | async) as cart">
+
+  <div class="cart-container" *ngIf="(cart.products?.length ?? 0)> 0; else emptyCart">
+
+    <h2 class="cart-title">Your Cart</h2>
+
+    <div class="cart-item" *ngFor="let item of cart.products">
+      <img class="cart-img" [src]="productMap.get(item.productId!)?.imageURL">
+      
+      <div style="flex:1; margin-left:10px;">
+        <p class="product-name">{{ productMap.get(item.productId!)?.productName }}
+            <span class="color-square" [style.background]="item.color"></span>
+        </p>
+        <p>{{item.subTotal | currency:'INR':'symbol':'1.0-0'}}</p>
+      </div>
+
+      <div class="qty-controls">
+        <button (click)="decrease(item.productId!,item.color!)">−</button>
+        <span>{{ item.quantity }}</span>
+        <button (click)="increase(item.productId!,item.color!)">+</button>
+      </div>
+
+      <button class="delete-btn" (click)="delete(item.productId!,item.color!)">🗑️</button>
+    </div>
+
+    <p class="cart-total">Total: {{ cart.amount | currency:'INR':'symbol':'1.0-0' }}</p>
+
+    <div class="cart-option">
+        <button class="checkout-btn" (click)="checkout()" >Checkout</button>
+    <button class="checkout-btn" (click)="clearCart()" >Clear Cart</button>
+    </div>
+    
+  </div>
+
+<ng-template #emptyCart>
+  <div class="empty-cart">
+    🛒 Your cart is empty
+  </div>
+</ng-template>
+
+</div>

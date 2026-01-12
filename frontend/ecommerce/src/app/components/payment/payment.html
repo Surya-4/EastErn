@@ -1,0 +1,87 @@
+<div class="payment-container">
+
+  <div class="payment-header">
+    <h2>Complete Your Payment</h2>
+    <p>Choose your preferred payment method</p>
+    <button class="back-btn" (click)="goBack()">← Exit Payment</button>
+  </div>
+
+  <div *ngIf="!responseCart.transactionId">
+
+    <div class="payment-options">
+      <div class="option-grid">
+        <div
+          *ngFor="let method of paymentMethods"
+          class="payment-option"
+          [class.selected]="selectedMethod === method.id"
+          (click)="selectPaymentMethod(method.id)">
+          
+          <span class="icon">{{ method.icon }}</span>
+          <h3>{{ method.name }}</h3>
+
+          <div
+            class="selected-indicator"
+            *ngIf="selectedMethod === method.id">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="payment-actions" *ngIf="selectedMethod">
+      <button
+  type="button"
+  class="pay-btn"
+  [disabled]="processing"
+  (click)="processPayment()">
+  {{ processing ? 'Processing...' : 'Pay Now' }}
+</button>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="processing" class="processing">
+    Processing payment...
+  </div>
+
+  <div *ngIf="responseCart.transactionId" class="receipt">
+
+    <h2 class="title">Payment Receipt</h2>
+
+    <div class="info">
+      <p><strong>Payment Method:</strong> {{ getPaymentMethod(responseCart.paymentMethod!) }}</p>
+      <p><strong>Transaction ID:</strong> {{ responseCart.transactionId }}</p>
+    </div>
+
+    <hr />
+
+    <h3>Products</h3>
+
+    <table class="product-table" *ngIf="responseCart.products?.length">
+      <thead>
+        <tr>
+          <th>Product ID</th>
+          <th>Color</th>
+          <th>Quantity</th>
+          <th>Sub Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of responseCart.products">
+          <td>{{ item.productId }}</td>
+          <td>{{ item.color }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹ {{ item.subTotal }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="total">
+      <h3>Total Amount: ₹ {{ responseCart.amount }}</h3>
+    </div>
+
+    <button class="print-btn" (click)="printReceipt()">Print Receipt</button>
+
+  </div>
+
+</div>

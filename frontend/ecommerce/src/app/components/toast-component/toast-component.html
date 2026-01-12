@@ -1,0 +1,12 @@
+<div class="toast-container">
+  <div *ngFor="let msg of toastService.messages()" class="toast" [ngClass]="msg.type">
+    <span>{{ msg.text }}</span>
+    
+    <div class="actions">
+      <button *ngIf="msg.action" (click)="handleAction(msg, 'ok')">{{ msg.action.text }}</button>
+      <button *ngIf="msg.cancelAction" (click)="handleAction(msg, 'cancel')">{{ msg.cancelAction.text }}</button>
+    </div>
+
+    <button class="close-btn" (click)="toastService.remove(msg)">✖</button>
+  </div>
+</div>

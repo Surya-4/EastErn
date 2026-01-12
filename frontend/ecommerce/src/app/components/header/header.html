@@ -1,0 +1,56 @@
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="title">
+            <span class="brand-icon">🛍️</span>
+            <a href="/" class="brand-text">EastErn</a>
+        </div>
+            <button class="hamburger" 
+            [class.active]="menuOpen" 
+            (click)="toggleMenu()"
+            aria-label="Menu">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </button>
+    </div>
+</nav>
+
+<div class="overlay" 
+     [class.active]="menuOpen" 
+     (click)="toggleMenu()"></div>
+
+<!-- Slide-out Menu -->
+<div class="side-menu" [class.open]="menuOpen">
+  <div class="menu-header">
+    <h2>Menu</h2>
+    <button class="close-btn" (click)="toggleMenu()">✕</button>
+  </div>
+  
+  <ul class="menu-list">
+    <li><a href="/" (click)="toggleMenu()">
+      <span class="icon">🏠</span> Home
+    </a></li>
+    <li><a href="/cart" (click)="toggleMenu()">
+      <span class="icon">🛒</span> Cart
+    </a></li>
+    <div *ngIf="!(isLoggedIn$|async)" >
+      <li><a href="/login" (click)="toggleMenu()">
+      <span class="icon">👤</span> Login
+    </a></li>
+    <li><a href="/register" (click)="toggleMenu()">
+      <span class="icon">👤</span> Register
+    </a></li>
+    </div>
+    <div *ngIf="(isLoggedIn$|async)">
+      <li><a href="/orders" (click)="toggleMenu()">
+      <span class="icon">📦</span> Orders
+    </a></li>
+      <li><a href="/" (click)="logout()">
+      <span class="icon">👤</span> Logout
+    </a></li>
+    </div>
+    <li><a href="/profile" (click)="toggleMenu()">
+      <span class="icon">⚙️</span> Profile
+    </a></li>
+  </ul>
+</div>

@@ -1,0 +1,50 @@
+<div class="orders-container">
+
+  <h2>Your Orders</h2>
+
+  <p *ngIf="isLoading">Loading orders...</p>
+
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+  <p *ngIf="!isLoading && orders.length === 0">
+    No orders found.
+  </p>
+
+  <div *ngFor="let order of orders" class="order-card">
+
+    <div class="order-header">
+      <p><strong>Order ID:</strong> {{ order.cartId }}</p>
+      <p><strong>Transaction:</strong> {{ order.transactionId }}</p>
+      <p><strong>Payment:</strong> {{getPaymentMethod(order.paymentMethod!)}} </p>
+    </div>
+
+    <table *ngIf="order.products?.length" class="product-table">
+      <thead>
+        <tr>
+           <th></th>
+          <th>Product Name</th>
+          <th>Color</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order.products">
+          <td><img class="cart-img" [src]="getProduct(item.productId!)?.imageURL"></td>
+          <td>{{getProduct(item.productId!)?.productName}}</td>
+          <td>{{ item.color }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹ {{ item.subTotal }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="order-total">
+      Total: ₹ {{ order.amount }}
+    </div>
+      
+    <!-- <button class="print-btn" (click)="printReceipt()">Print Receipt</button> -->
+
+  </div>
+
+</div>

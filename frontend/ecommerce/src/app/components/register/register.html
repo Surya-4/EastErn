@@ -1,0 +1,54 @@
+<div class="register-container">
+
+  <div class="register-card">
+
+    <h2 class="register-title">Create Account</h2>
+    <p class="register-subtitle">Register to get started</p>
+
+    <form>
+
+      <div class="input-group">
+        <label>Username</label>
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="loginRequest.userName"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="loginRequest.password"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          name="confirmPassword"
+          [(ngModel)]="confirmPassword"
+          required
+        />
+      </div>
+
+      <p class="error-msg" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </p>
+      <button class="register-btn" type="submit" (click)="onRegister()">Register</button>
+
+      <p class="switch-text">
+        Already have an account?
+        <a href="/login">login</a>
+      </p>
+
+    </form>
+
+  </div>
+
+</div>

@@ -1,0 +1,92 @@
+<div class="profile-wrapper">
+  <img class="avatar" src="https://ui-avatars.com/api/?name=Surya" />
+
+  <div class="profile-card">
+    <div class="profile-section">
+
+<img
+  [src]="'https://ui-avatars.com/api/?name=' + (user.firstName || user.userName || 'User')"
+  class="avatar"
+/>
+
+  <div class="row" *ngFor="let field of fields" [id]="'field-' + field">
+    <label>{{ field | titlecase }}</label>
+
+    <!-- DISPLAY MODE -->
+    <div *ngIf="!editMode[field]" class="value-display">
+      <span>
+        <!-- NORMAL FIELDS -->
+        <ng-container *ngIf="field !== 'address'">
+          {{ user[field] || '---' }}
+        </ng-container>
+
+        <!-- ADDRESS DISPLAY (MULTIPLE) -->
+        <ng-container *ngIf="field === 'address'">
+          <div *ngIf="user.address; else noAddr">
+            <div *ngFor="let addr of user.address | keyvalue">
+              <strong>{{ addr.key }}:</strong> {{ addr.value }}
+            </div>
+          </div>
+          <ng-template #noAddr>---</ng-template>
+        </ng-container>
+      </span>
+
+      <i class="fa fa-edit edit-icon" (click)="enableEdit(field, $event)"></i>
+    </div>
+
+    <!-- EDIT MODE -->
+    <div *ngIf="editMode[field]"
+         class="value-edit"
+         (click)="$event.stopPropagation()">
+
+      <!-- NORMAL FIELDS INPUT -->
+      <input *ngIf="field !== 'address'"
+             [(ngModel)]="user[field]"
+             name="{{field}}"
+             (input)="onValueChange()"
+      />
+
+<div *ngIf="field === 'address'">
+
+  <!-- Show Add button when no addresses -->
+  <div *ngIf="!user.address || (user.address | keyvalue).length === 0">
+    <button class="add-btn" (click)="addAddress()">+ Add Address</button>
+  </div>
+
+  <!-- Loop through addresses -->
+<div class="address-row"
+     *ngFor="let addr of user.address | keyvalue; trackBy: trackByAddr">
+
+    <!-- Label is FIXED (not editable) -->
+    <input class="addr-key"
+           [value]="addr.key"
+            (blur)="renameAddressKey(addr.key, $event.target.value)" />
+
+    <!-- Textarea is editable -->
+    <textarea class="addr-value"
+              [(ngModel)]="user.address![addr.key]"
+              (input)="onValueChange()"
+              placeholder="Enter address"></textarea>
+
+    <button class="delete-btn"
+            (click)="removeAddress(addr.key)">✕</button>
+  </div>
+
+  <!-- Add New -->
+   <div *ngIf="user.address && (user.address|keyvalue).length>0 " >
+      <button class="add-btn" (click)="addAddress()">+ Add Address</button>
+   </div>
+</div>
+
+  </div>
+
+</div>
+
+<div class="actions" *ngIf="isDirty">
+  <button class="btn-update" (click)="updateProfile()">Update</button>
+  <button class="btn-cancel" (click)="cancelEdit()">Cancel</button>
+</div>
+
+  </div>
+</div>
+
